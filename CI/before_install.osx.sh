@@ -1,7 +1,6 @@
 #!/bin/sh
 
 brew update
-
 brew rm cmake || true
 brew rm pkgconfig || true
 brew rm qt5 || true
