@@ -347,7 +347,7 @@ namespace MWClass
     {
         if (!ptr.getRefData().getCustomData())
         {
-            std::auto_ptr<DoorCustomData> data(new DoorCustomData);
+            std::unique_ptr<DoorCustomData> data(new DoorCustomData);
 
             data->mDoorState = 0;
             ptr.getRefData().setCustomData(data.release());

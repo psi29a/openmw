@@ -135,7 +135,7 @@ namespace Resource
 
         osg::ref_ptr<osg::Node> createInstance(const std::string& name);
 
-        std::auto_ptr<Shader::ShaderManager> mShaderManager;
+        std::unique_ptr<Shader::ShaderManager> mShaderManager;
         bool mForceShaders;
         bool mClampLighting;
         bool mForcePerPixelLighting;

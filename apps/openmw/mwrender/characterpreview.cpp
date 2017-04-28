@@ -72,7 +72,7 @@ namespace MWRender
         , mPosition(position)
         , mLookAt(lookAt)
         , mCharacter(character)
-        , mAnimation(NULL)
+        , mAnimation(nullptr)
         , mSizeX(sizeX)
         , mSizeY(sizeY)
     {
@@ -142,7 +142,7 @@ namespace MWRender
 
         mViewer->getSceneData()->asGroup()->addChild(mCamera);
 
-        mCharacter.mCell = NULL;
+        mCharacter.mCell = nullptr;
     }
 
     CharacterPreview::~CharacterPreview ()
@@ -171,7 +171,7 @@ namespace MWRender
 
     void CharacterPreview::rebuild()
     {
-        mAnimation.reset(NULL);
+        mAnimation.reset(nullptr);
 
         mAnimation.reset(new NpcAnimation(mCharacter, mNode, mResourceSystem, true, true,
                                       (renderHeadOnly() ? NpcAnimation::VM_HeadOnly : NpcAnimation::VM_Normal)));
