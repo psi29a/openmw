@@ -1,7 +1,7 @@
 os:
  - linux
  - osx
-osx_image: xcode8.2
+osx_image: xcode8.3
 language: cpp
 sudo: required
 dist: trusty
@@ -32,7 +32,7 @@ addons:
       # Tests
       libgtest-dev, google-mock,
       # Boost
-      libboost-filesystem-dev, libboost-program-options-dev, libboost-system-dev, libboost-thread-dev,
+      libboost-filesystem-dev, libboost-program-options-dev,
       # FFmpeg
       libavcodec-dev, libavformat-dev, libavutil-dev, libswscale-dev,
       # Audio & Video
@@ -63,7 +63,7 @@ before_script: ./CI/before_script.${TRAVIS_OS_NAME}.sh
 script:
  - cd ./build
  - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then ${ANALYZE}make -j3; fi
- - if [ "$COVERITY_SCAN_BRANCH" != 1 ] && [ "${TRAVIS_OS_NAME}" = "osx" ]; then make package; fi
+ - if [ "$COVERITY_SCAN_BRANCH" != 1 ] && [ "${TRAVIS_OS_NAME}" = "osx" ]; then make; fi
  - if [ "$COVERITY_SCAN_BRANCH" != 1 ] && [ "${TRAVIS_OS_NAME}" = "linux" ]; then ./openmw_test_suite; fi
  - if [ "$COVERITY_SCAN_BRANCH" != 1 ] && [ "${TRAVIS_OS_NAME}" = "linux" ]; then cd .. && ./CI/check_tabs.sh; fi
  - cd "${TRAVIS_BUILD_DIR}"
