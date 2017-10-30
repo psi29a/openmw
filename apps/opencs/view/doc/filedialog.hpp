@@ -4,12 +4,12 @@
 #include <QDialog>
 #include <QModelIndex>
 
-#include <boost/filesystem/path.hpp>
+#include <experimental/filesystem>
 #include "adjusterwidget.hpp"
 
 #ifndef CS_QT_BOOST_FILESYSTEM_PATH_DECLARED
 #define CS_QT_BOOST_FILESYSTEM_PATH_DECLARED
-Q_DECLARE_METATYPE (boost::filesystem::path)
+Q_DECLARE_METATYPE (std::experimental::filesystem::path)
 #endif
 
 #include "ui_filedialog.h"
@@ -47,7 +47,7 @@ namespace CSVDoc
         QString filename() const;
         QStringList selectedFilePaths();
 
-        void setLocalData (const boost::filesystem::path& localData);
+        void setLocalData (const std::experimental::filesystem::path& localData);
 
     private:
 
@@ -56,8 +56,8 @@ namespace CSVDoc
 
     signals:
 
-        void signalOpenFiles (const boost::filesystem::path &path);
-        void signalCreateNewFile (const boost::filesystem::path &path);
+        void signalOpenFiles (const std::experimental::filesystem::path &path);
+        void signalCreateNewFile (const std::experimental::filesystem::path &path);
 
         void signalUpdateAcceptButton (bool, int);
 

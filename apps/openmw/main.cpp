@@ -44,9 +44,9 @@ namespace boost
 {
 
 template<>
-inline boost::filesystem::path lexical_cast<boost::filesystem::path, std::string>(const std::string& arg)
+inline std::experimental::filesystem::path lexical_cast<std::experimental::filesystem::path, std::string>(const std::string& arg)
 {
-    return boost::filesystem::path(arg);
+    return std::experimental::filesystem::path(arg);
 }
 
 } /* namespace boost */
@@ -309,7 +309,7 @@ int main(int argc, char**argv)
     std::ostream oldcout(cout_rdbuf);
     std::ostream oldcerr(cerr_rdbuf);
 
-    boost::filesystem::ofstream logfile;
+    std::ofstream logfile;
 
     std::unique_ptr<OMW::Engine> engine;
 
@@ -326,7 +326,7 @@ int main(int argc, char**argv)
         std::cerr.rdbuf (&sb);
 #else
         // Redirect cout and cerr to openmw.log
-        logfile.open (boost::filesystem::path(cfgMgr.getLogPath() / "/openmw.log"));
+        logfile.open (std::experimental::filesystem::path(cfgMgr.getLogPath() / "/openmw.log"));
 
         coutsb.open (Tee(logfile, oldcout));
         cerrsb.open (Tee(logfile, oldcerr));
@@ -349,8 +349,8 @@ int main(int argc, char**argv)
 #endif
 
 #ifdef __APPLE__
-        boost::filesystem::path binary_path = boost::filesystem::system_complete(boost::filesystem::path(argv[0]));
-        boost::filesystem::current_path(binary_path.parent_path());
+        std::experimental::filesystem::path binary_path = std::experimental::filesystem::system_complete(std::experimental::filesystem::path(argv[0]));
+        std::experimental::filesystem::current_path(binary_path.parent_path());
 #endif
 
         engine.reset(new OMW::Engine(cfgMgr));

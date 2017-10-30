@@ -2,8 +2,8 @@
 #define CS_EDITOR_H
 
 #include <boost/interprocess/sync/file_lock.hpp>
-#include <boost/filesystem/fstream.hpp>
 
+#include <fstream>
 #include <QObject>
 #include <QString>
 #include <QLocalServer>
@@ -47,11 +47,11 @@ namespace CS
             CSVDoc::NewGameDialogue mNewGame;
             CSVPrefs::Dialogue mSettings;
             CSVDoc::FileDialog mFileDialog;
-            boost::filesystem::path mLocal;
-            boost::filesystem::path mResources;
-            boost::filesystem::path mPid;
+            std::experimental::filesystem::path mLocal;
+            std::experimental::filesystem::path mResources;
+            std::experimental::filesystem::path mPid;
             boost::interprocess::file_lock mLock;
-            boost::filesystem::ofstream mPidFile;
+            std::ofstream mPidFile;
             bool mFsStrict;
             CSVTools::Merge mMerge;
 
@@ -83,9 +83,9 @@ namespace CS
             void cancelFileDialog();
 
             void loadDocument();
-            void openFiles (const boost::filesystem::path &path);
-            void createNewFile (const boost::filesystem::path& path);
-            void createNewGame (const boost::filesystem::path& file);
+            void openFiles (const std::experimental::filesystem::path &path);
+            void createNewFile (const std::experimental::filesystem::path& path);
+            void createNewGame (const std::experimental::filesystem::path& file);
 
             void showStartup();
 

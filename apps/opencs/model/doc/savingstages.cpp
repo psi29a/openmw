@@ -1,6 +1,6 @@
 #include "savingstages.hpp"
 
-#include <boost/filesystem.hpp>
+#include <experimental/filesystem>
 
 #include <QUndoStack>
 
@@ -64,14 +64,14 @@ void CSMDoc::WriteHeaderStage::perform (int stage, Messages& messages)
             mDocument.getData().count (CSMWorld::RecordBase::State_Deleted));
 
         /// \todo refine dependency list (at least remove redundant dependencies)
-        std::vector<boost::filesystem::path> dependencies = mDocument.getContentFiles();
-        std::vector<boost::filesystem::path>::const_iterator end (--dependencies.end());
+        std::vector<std::experimental::filesystem::path> dependencies = mDocument.getContentFiles();
+        std::vector<std::experimental::filesystem::path>::const_iterator end (--dependencies.end());
 
-        for (std::vector<boost::filesystem::path>::const_iterator iter (dependencies.begin());
+        for (std::vector<std::experimental::filesystem::path>::const_iterator iter (dependencies.begin());
             iter!=end; ++iter)
         {
             std::string name = iter->filename().string();
-            uint64_t size = boost::filesystem::file_size (*iter);
+            uint64_t size = std::experimental::filesystem::file_size (*iter);
 
             mState.getWriter().addMaster (name, size);
         }
@@ -485,15 +485,15 @@ void CSMDoc::FinalSavingStage::perform (int stage, Messages& messages)
         mState.getWriter().close();
         mState.getStream().close();
 
-        if (boost::filesystem::exists (mState.getTmpPath()))
-            boost::filesystem::remove (mState.getTmpPath());
+        if (std::experimental::filesystem::exists (mState.getTmpPath()))
+            std::experimental::filesystem::remove (mState.getTmpPath());
     }
     else if (!mState.isProjectFile())
     {
-        if (boost::filesystem::exists (mState.getPath()))
-            boost::filesystem::remove (mState.getPath());
+        if (std::experimental::filesystem::exists (mState.getPath()))
+            std::experimental::filesystem::remove (mState.getPath());
 
-        boost::filesystem::rename (mState.getTmpPath(), mState.getPath());
+        std::experimental::filesystem::rename (mState.getTmpPath(), mState.getPath());
 
         mDocument.getUndoStack().setClean();
     }

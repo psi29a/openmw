@@ -4,14 +4,15 @@
 
 #include <pwd.h>
 #include <unistd.h>
-#include <boost/filesystem/fstream.hpp>
+#include <fstream>
+#include <string.h>
 
 #include <components/misc/stringops.hpp>
 
 
 namespace
 {
-    boost::filesystem::path getUserHome()
+    std::experimental::filesystem::path getUserHome()
     {
         const char* dir = getenv("HOME");
         if (dir == NULL)
@@ -23,17 +24,17 @@ namespace
             }
         }
         if (dir == NULL)
-            return boost::filesystem::path();
+            return std::experimental::filesystem::path();
         else
-            return boost::filesystem::path(dir);
+            return std::experimental::filesystem::path(dir);
     }
 
-    boost::filesystem::path getEnv(const std::string& envVariable, const boost::filesystem::path& fallback)
+    std::experimental::filesystem::path getEnv(const std::string& envVariable, const std::experimental::filesystem::path& fallback)
     {
         const char* result = getenv(envVariable.c_str());
         if (!result)
             return fallback;
-        boost::filesystem::path dir(result);
+        std::experimental::filesystem::path dir(result);
         if (dir.empty())
             return fallback;
         else
@@ -52,52 +53,52 @@ LinuxPath::LinuxPath(const std::string& application_name)
 {
 }
 
-boost::filesystem::path LinuxPath::getUserConfigPath() const
+std::experimental::filesystem::path LinuxPath::getUserConfigPath() const
 {
     return getEnv("XDG_CONFIG_HOME", getUserHome() / ".config") / mName;
 }
 
-boost::filesystem::path LinuxPath::getUserDataPath() const
+std::experimental::filesystem::path LinuxPath::getUserDataPath() const
 {
     return getEnv("XDG_DATA_HOME", getUserHome() / ".local/share") / mName;
 }
 
-boost::filesystem::path LinuxPath::getCachePath() const
+std::experimental::filesystem::path LinuxPath::getCachePath() const
 {
     return getEnv("XDG_CACHE_HOME", getUserHome() / ".cache") / mName;
 }
 
-boost::filesystem::path LinuxPath::getGlobalConfigPath() const
+std::experimental::filesystem::path LinuxPath::getGlobalConfigPath() const
 {
-    boost::filesystem::path globalPath(GLOBAL_CONFIG_PATH);
+    std::experimental::filesystem::path globalPath(GLOBAL_CONFIG_PATH);
     return globalPath / mName;
 }
 
-boost::filesystem::path LinuxPath::getLocalPath() const
+std::experimental::filesystem::path LinuxPath::getLocalPath() const
 {
-    return boost::filesystem::path("./");
+    return std::experimental::filesystem::path("./");
 }
 
-boost::filesystem::path LinuxPath::getGlobalDataPath() const
+std::experimental::filesystem::path LinuxPath::getGlobalDataPath() const
 {
-    boost::filesystem::path globalDataPath(GLOBAL_DATA_PATH);
+    std::experimental::filesystem::path globalDataPath(GLOBAL_DATA_PATH);
     return globalDataPath / mName;
 }
 
-boost::filesystem::path LinuxPath::getInstallPath() const
+std::experimental::filesystem::path LinuxPath::getInstallPath() const
 {
-    boost::filesystem::path installPath;
+    std::experimental::filesystem::path installPath;
 
-    boost::filesystem::path homePath = getUserHome();
+    std::experimental::filesystem::path homePath = getUserHome();
 
     if (!homePath.empty())
     {
-        boost::filesystem::path wineDefaultRegistry(homePath);
+        std::experimental::filesystem::path wineDefaultRegistry(homePath);
         wineDefaultRegistry /= ".wine/system.reg";
 
-        if (boost::filesystem::is_regular_file(wineDefaultRegistry))
+        if (std::experimental::filesystem::is_regular_file(wineDefaultRegistry))
         {
-            boost::filesystem::ifstream file(wineDefaultRegistry);
+            std::ifstream file(wineDefaultRegistry);
             bool isRegEntry = false;
             std::string line;
             std::string mwpath;
@@ -144,7 +145,7 @@ boost::filesystem::path LinuxPath::getInstallPath() const
                 installPath /= ".wine/dosdevices/";
                 installPath /= mwpath;
 
-                if (!boost::filesystem::is_directory(installPath))
+                if (!std::experimental::filesystem::is_directory(installPath))
                 {
                     installPath.clear();
                 }

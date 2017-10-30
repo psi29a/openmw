@@ -158,6 +158,9 @@ if (USE_QT)
     endif()
 endif()
 
+# FMT search
+find_package(Fmt REQUIRED)
+
 # Sound setup
 find_package(FFmpeg REQUIRED COMPONENTS AVCODEC AVFORMAT AVUTIL SWSCALE SWRESAMPLE)
 # Required for building the FFmpeg headers
@@ -347,7 +350,7 @@ endif()
 
 # CXX Compiler settings
 if (CMAKE_CXX_COMPILER_ID STREQUAL GNU OR CMAKE_CXX_COMPILER_ID STREQUAL Clang)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wundef -Wno-unused-parameter -std=c++11 -pedantic -Wno-long-long")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wundef -Wno-unused-parameter -std=c++17 -pedantic -Wno-long-long")
     add_definitions( -DBOOST_NO_CXX11_SCOPED_ENUMS=ON )
 
     if (APPLE)

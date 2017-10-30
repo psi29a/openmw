@@ -32,63 +32,63 @@ WindowsPath::WindowsPath(const std::string& application_name)
 
         See boost::filesystem and boost::locale reference for details.
     */
-    boost::filesystem::path::imbue(boost::locale::generator().generate(""));
+    std::experimental::filesystem::path::imbue(boost::locale::generator().generate(""));
 }
 
-boost::filesystem::path WindowsPath::getUserConfigPath() const
+std::experimental::filesystem::path WindowsPath::getUserConfigPath() const
 {
-    boost::filesystem::path userPath(".");
+    std::experimental::filesystem::path userPath(".");
 
     WCHAR path[MAX_PATH + 1];
     memset(path, 0, sizeof(path));
 
     if(SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path)))
     {
-        userPath = boost::filesystem::path(bconv::utf_to_utf<char>(path));
+        userPath = std::experimental::filesystem::path(bconv::utf_to_utf<char>(path));
     }
 
     return userPath / "My Games" / mName;
 }
 
-boost::filesystem::path WindowsPath::getUserDataPath() const
+std::experimental::filesystem::path WindowsPath::getUserDataPath() const
 {
     // Have some chaos, windows people!
     return getUserConfigPath();
 }
 
-boost::filesystem::path WindowsPath::getGlobalConfigPath() const
+std::experimental::filesystem::path WindowsPath::getGlobalConfigPath() const
 {
-    boost::filesystem::path globalPath(".");
+    std::experimental::filesystem::path globalPath(".");
 
     WCHAR path[MAX_PATH + 1];
     memset(path, 0, sizeof(path));
 
     if(SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PROGRAM_FILES | CSIDL_FLAG_CREATE, NULL, 0, path)))
     {
-        globalPath = boost::filesystem::path(bconv::utf_to_utf<char>(path));
+        globalPath = std::experimental::filesystem::path(bconv::utf_to_utf<char>(path));
     }
 
     return globalPath / mName;
 }
 
-boost::filesystem::path WindowsPath::getLocalPath() const
+std::experimental::filesystem::path WindowsPath::getLocalPath() const
 {
-    return boost::filesystem::path("./");
+    return std::experimental::filesystem::path("./");
 }
 
-boost::filesystem::path WindowsPath::getGlobalDataPath() const
+std::experimental::filesystem::path WindowsPath::getGlobalDataPath() const
 {
     return getGlobalConfigPath();
 }
 
-boost::filesystem::path WindowsPath::getCachePath() const
+std::experimental::filesystem::path WindowsPath::getCachePath() const
 {
     return getUserConfigPath() / "cache";
 }
 
-boost::filesystem::path WindowsPath::getInstallPath() const
+std::experimental::filesystem::path WindowsPath::getInstallPath() const
 {
-    boost::filesystem::path installPath("");
+    std::experimental::filesystem::path installPath("");
 
     HKEY hKey;
 

@@ -3,10 +3,12 @@
 
 #include <iosfwd>
 #include <iostream>
-#include <boost/filesystem/path.hpp>
+#include <experimental/filesystem>
 #include <MyGUI_TextIterator.h>
 
 #include "components/loadinglistener/loadinglistener.hpp"
+
+
 
 namespace MWWorld
 {
@@ -22,7 +24,7 @@ struct ContentLoader
     {
     }
 
-    virtual void load(const boost::filesystem::path& filepath, int& index)
+    virtual void load(const std::experimental::filesystem::path& filepath, int& index)
     {
       std::cout << "Loading content file " << filepath.string() << std::endl;
       mListener.setLabel(MyGUI::TextIterator::toTagsString(filepath.string()));

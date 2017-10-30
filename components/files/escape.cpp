@@ -122,7 +122,7 @@ namespace Files
     {
         PathContainer temp;
         for (EscapePathContainer::const_iterator it = escapePathContainer.begin(); it != escapePathContainer.end(); ++it)
-            temp.push_back(it->mPath);
+            temp.push_back(it->mPath.string());
         return temp;
     }
 

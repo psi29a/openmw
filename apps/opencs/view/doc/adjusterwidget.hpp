@@ -1,9 +1,11 @@
 #ifndef CSV_DOC_ADJUSTERWIDGET_H
 #define CSV_DOC_ADJUSTERWIDGET_H
 
-#include <boost/filesystem/path.hpp>
+#include <experimental/filesystem>
 
 #include <QWidget>
+
+
 
 class QLabel;
 
@@ -22,11 +24,11 @@ namespace CSVDoc
 
         public:
 
-            boost::filesystem::path mLocalData;
+            std::experimental::filesystem::path mLocalData;
             QLabel *mMessage;
             QLabel *mIcon;
             bool mValid;
-            boost::filesystem::path mResultPath;
+            std::experimental::filesystem::path mResultPath;
             ContentAction mAction;
             bool mDoFilenameCheck;
 
@@ -34,13 +36,13 @@ namespace CSVDoc
 
             AdjusterWidget (QWidget *parent = 0);
 
-            void setLocalData (const boost::filesystem::path& localData);
+            void setLocalData (const std::experimental::filesystem::path& localData);
             void setAction (ContentAction action);
 
             void setFilenameCheck (bool doCheck);
             bool isValid() const;
 
-            boost::filesystem::path getPath() const;
+            std::experimental::filesystem::path getPath() const;
             ///< This function must not be called if there is no valid path.
 
         public slots:

@@ -6,7 +6,7 @@
 
 #include <boost/algorithm/string/erase.hpp>
 #include <boost/algorithm/string/replace.hpp>
-#include <boost/filesystem/fstream.hpp>
+#include <fstream>
 /**
  * \namespace Files
  */
@@ -31,8 +31,8 @@ ConfigurationManager::ConfigurationManager(bool silent)
 {
     setupTokensMapping();
 
-    boost::filesystem::create_directories(mFixedPath.getUserConfigPath());
-    boost::filesystem::create_directories(mFixedPath.getUserDataPath());
+    std::experimental::filesystem::create_directories(mFixedPath.getUserConfigPath());
+    std::experimental::filesystem::create_directories(mFixedPath.getUserDataPath());
 
     mLogPath = mFixedPath.getUserConfigPath();
 }
@@ -85,7 +85,7 @@ void ConfigurationManager::processPaths(Files::PathContainer& dataDirs, bool cre
                 TokensMappingContainer::iterator tokenIt = mTokensMapping.find(path.substr(0, pos + 1));
                 if (tokenIt != mTokensMapping.end())
                 {
-                    boost::filesystem::path tempPath(((mFixedPath).*(tokenIt->second))());
+                    std::experimental::filesystem::path tempPath(((mFixedPath).*(tokenIt->second))());
                     if (pos < path.length() - 1)
                     {
                         // There is something after the token, so we should
@@ -103,17 +103,17 @@ void ConfigurationManager::processPaths(Files::PathContainer& dataDirs, bool cre
             }
         }
 
-        if (!boost::filesystem::is_directory(*it))
+        if (!std::experimental::filesystem::is_directory(*it))
         {
             if (create)
             {
                 try
                 {
-                    boost::filesystem::create_directories (*it);
+                    std::experimental::filesystem::create_directories (*it);
                 }
                 catch (...) {}
 
-                if (boost::filesystem::is_directory(*it))
+                if (std::experimental::filesystem::is_directory(*it))
                     continue;
             }
 
@@ -122,21 +122,21 @@ void ConfigurationManager::processPaths(Files::PathContainer& dataDirs, bool cre
     }
 
     dataDirs.erase(std::remove_if(dataDirs.begin(), dataDirs.end(),
-        std::bind(&boost::filesystem::path::empty, std::placeholders::_1)), dataDirs.end());
+        std::bind(&std::experimental::filesystem::path::empty, std::placeholders::_1)), dataDirs.end());
 }
 
-bool ConfigurationManager::loadConfig(const boost::filesystem::path& path,
+bool ConfigurationManager::loadConfig(const std::experimental::filesystem::path& path,
     boost::program_options::variables_map& variables,
     boost::program_options::options_description& description)
 {
-    boost::filesystem::path cfgFile(path);
+    std::experimental::filesystem::path cfgFile(path);
     cfgFile /= std::string(openmwCfgFile);
-    if (boost::filesystem::is_regular_file(cfgFile))
+    if (std::experimental::filesystem::is_regular_file(cfgFile))
     {
         if (!mSilent)
             std::cout << "Loading config file: " << cfgFile.string() << "... ";
 
-        boost::filesystem::ifstream configFileStreamUnfiltered(cfgFile);
+        std::ifstream configFileStreamUnfiltered(cfgFile);
         boost::iostreams::filtering_istream configFileStream;
         configFileStream.push(escape_hash_filter());
         configFileStream.push(configFileStreamUnfiltered);
@@ -159,42 +159,42 @@ bool ConfigurationManager::loadConfig(const boost::filesystem::path& path,
     return false;
 }
 
-const boost::filesystem::path& ConfigurationManager::getGlobalPath() const
+const std::experimental::filesystem::path& ConfigurationManager::getGlobalPath() const
 {
     return mFixedPath.getGlobalConfigPath();
 }
 
-const boost::filesystem::path& ConfigurationManager::getUserConfigPath() const
+const std::experimental::filesystem::path& ConfigurationManager::getUserConfigPath() const
 {
     return mFixedPath.getUserConfigPath();
 }
 
-const boost::filesystem::path& ConfigurationManager::getUserDataPath() const
+const std::experimental::filesystem::path& ConfigurationManager::getUserDataPath() const
 {
     return mFixedPath.getUserDataPath();
 }
 
-const boost::filesystem::path& ConfigurationManager::getLocalPath() const
+const std::experimental::filesystem::path& ConfigurationManager::getLocalPath() const
 {
     return mFixedPath.getLocalPath();
 }
 
-const boost::filesystem::path& ConfigurationManager::getGlobalDataPath() const
+const std::experimental::filesystem::path& ConfigurationManager::getGlobalDataPath() const
 {
     return mFixedPath.getGlobalDataPath();
 }
 
-const boost::filesystem::path& ConfigurationManager::getCachePath() const
+const std::experimental::filesystem::path& ConfigurationManager::getCachePath() const
 {
     return mFixedPath.getCachePath();
 }
 
-const boost::filesystem::path& ConfigurationManager::getInstallPath() const
+const std::experimental::filesystem::path& ConfigurationManager::getInstallPath() const
 {
     return mFixedPath.getInstallPath();
 }
 
-const boost::filesystem::path& ConfigurationManager::getLogPath() const
+const std::experimental::filesystem::path& ConfigurationManager::getLogPath() const
 {
     return mLogPath;
 }

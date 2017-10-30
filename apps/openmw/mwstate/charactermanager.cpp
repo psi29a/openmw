@@ -2,24 +2,24 @@
 
 #include <sstream>
 
-#include <boost/filesystem.hpp>
+#include <experimental/filesystem>
 
-MWState::CharacterManager::CharacterManager (const boost::filesystem::path& saves,
+MWState::CharacterManager::CharacterManager (const std::experimental::filesystem::path& saves,
     const std::string& game)
 : mPath (saves), mCurrent (0), mGame (game)
 {
-    if (!boost::filesystem::is_directory (mPath))
+    if (!std::experimental::filesystem::is_directory (mPath))
     {
-        boost::filesystem::create_directories (mPath);
+        std::experimental::filesystem::create_directories (mPath);
     }
     else
     {
-        for (boost::filesystem::directory_iterator iter (mPath);
-            iter!=boost::filesystem::directory_iterator(); ++iter)
+        for (std::experimental::filesystem::directory_iterator iter (mPath);
+            iter!=std::experimental::filesystem::directory_iterator(); ++iter)
         {
-            boost::filesystem::path characterDir = *iter;
+            std::experimental::filesystem::path characterDir = *iter;
 
-            if (boost::filesystem::is_directory (characterDir))
+            if (std::experimental::filesystem::is_directory (characterDir))
             {
                 Character character (characterDir, mGame);
 
@@ -64,11 +64,11 @@ MWState::Character* MWState::CharacterManager::createCharacter(const std::string
             stream << "_";
     }
 
-    boost::filesystem::path path = mPath / stream.str();
+    std::experimental::filesystem::path path = mPath / stream.str();
 
     // Append an index if necessary to ensure a unique directory
     int i=0;
-    while (boost::filesystem::exists(path))
+    while (std::experimental::filesystem::exists(path))
     {
            std::ostringstream test;
            test << stream.str();

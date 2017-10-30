@@ -54,15 +54,15 @@ CS::Editor::Editor ()
     connect (&mStartup, SIGNAL (loadDocument()), this, SLOT (loadDocument ()));
     connect (&mStartup, SIGNAL (editConfig()), this, SLOT (showSettings ()));
 
-    connect (&mFileDialog, SIGNAL(signalOpenFiles (const boost::filesystem::path&)),
-             this, SLOT(openFiles (const boost::filesystem::path&)));
+    connect (&mFileDialog, SIGNAL(signalOpenFiles (const std::experimental::filesystem::path&)),
+             this, SLOT(openFiles (const std::experimental::filesystem::path&)));
 
-    connect (&mFileDialog, SIGNAL(signalCreateNewFile (const boost::filesystem::path&)),
-             this, SLOT(createNewFile (const boost::filesystem::path&)));
+    connect (&mFileDialog, SIGNAL(signalCreateNewFile (const std::experimental::filesystem::path&)),
+             this, SLOT(createNewFile (const std::experimental::filesystem::path&)));
     connect (&mFileDialog, SIGNAL (rejected()), this, SLOT (cancelFileDialog ()));
 
-    connect (&mNewGame, SIGNAL (createRequest (const boost::filesystem::path&)),
-             this, SLOT (createNewGame (const boost::filesystem::path&)));
+    connect (&mNewGame, SIGNAL (createRequest (const std::experimental::filesystem::path&)),
+             this, SLOT (createNewGame (const std::experimental::filesystem::path&)));
     connect (&mNewGame, SIGNAL (cancelCreateGame()), this, SLOT (cancelCreateGame ()));
 }
 
@@ -70,7 +70,7 @@ CS::Editor::~Editor ()
 {
     mPidFile.close();
 
-    if(mServer && boost::filesystem::exists(mPid))
+    if(mServer && std::experimental::filesystem::exists(mPid))
         static_cast<void> ( // silence coverity warning
         remove(mPid.string().c_str())); // ignore any error
 }
@@ -225,9 +225,9 @@ void CS::Editor::loadDocument()
     mFileDialog.showDialog (CSVDoc::ContentAction_Edit);
 }
 
-void CS::Editor::openFiles (const boost::filesystem::path &savePath)
+void CS::Editor::openFiles (const std::experimental::filesystem::path &savePath)
 {
-    std::vector<boost::filesystem::path> files;
+    std::vector<std::experimental::filesystem::path> files;
 
     foreach (const QString &path, mFileDialog.selectedFilePaths())
         files.push_back(path.toUtf8().constData());
@@ -237,9 +237,9 @@ void CS::Editor::openFiles (const boost::filesystem::path &savePath)
     mFileDialog.hide();
 }
 
-void CS::Editor::createNewFile (const boost::filesystem::path &savePath)
+void CS::Editor::createNewFile (const std::experimental::filesystem::path &savePath)
 {
-    std::vector<boost::filesystem::path> files;
+    std::vector<std::experimental::filesystem::path> files;
 
     foreach (const QString &path, mFileDialog.selectedFilePaths()) {
         files.push_back(path.toUtf8().constData());
@@ -252,9 +252,9 @@ void CS::Editor::createNewFile (const boost::filesystem::path &savePath)
     mFileDialog.hide();
 }
 
-void CS::Editor::createNewGame (const boost::filesystem::path& file)
+void CS::Editor::createNewGame (const std::experimental::filesystem::path& file)
 {
-    std::vector<boost::filesystem::path> files;
+    std::vector<std::experimental::filesystem::path> files;
 
     files.push_back (file);
 
@@ -285,9 +285,9 @@ bool CS::Editor::makeIPCServer()
 {
     try
     {
-        mPid = boost::filesystem::temp_directory_path();
+        mPid = std::experimental::filesystem::temp_directory_path();
         mPid /= "openmw-cs.pid";
-        bool pidExists = boost::filesystem::exists(mPid);
+        bool pidExists = std::experimental::filesystem::exists(mPid);
 
         mPidFile.open(mPid);
 
@@ -314,7 +314,7 @@ bool CS::Editor::makeIPCServer()
             mServer->close();
             fullPath.remove(QRegExp("dummy$"));
             fullPath += mIpcServerName;
-            if(boost::filesystem::exists(fullPath.toUtf8().constData()))
+            if(std::experimental::filesystem::exists(fullPath.toUtf8().constData()))
             {
                 // TODO: compare pid of the current process with that in the file
                 std::cout << "Detected unclean shutdown." << std::endl;

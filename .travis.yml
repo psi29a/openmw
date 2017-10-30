@@ -1,8 +1,9 @@
 os:
  - linux
  - osx
-osx_image: xcode8.3
+osx_image: xcode9.1
 language: cpp
+install: export c
 sudo: required
 dist: trusty
 branches:
@@ -21,10 +22,10 @@ addons:
     sources:
       - sourceline: 'ppa:openmw/openmw'
       - ubuntu-toolchain-r-test
-      - llvm-toolchain-precise-3.6
+      - llvm-toolchain-trusty-5.0
     packages: [
-      # Dev
-      clang-3.6, libunshield-dev, libtinyxml-dev,
+      # Dev Tool Chain
+      g++-7, clang-5.0,
       # Tests
       libgtest-dev, google-mock,
       # Boost
@@ -32,7 +33,9 @@ addons:
       # FFmpeg
       libavcodec-dev, libavformat-dev, libavutil-dev, libswscale-dev,
       # Audio & Video
-      libsdl2-dev, libqt4-dev, libopenal-dev,
+      libsdl2-dev, libqt5opengl5-dev, libqt4-dev, libopenal-dev,
+      # Additional 3rd party required libraries
+      libunshield-dev, libtinyxml-dev, libfmt3-dev,
       # The other ones from OpenMW ppa
       libbullet-dev, libswresample-dev, libopenscenegraph-3.4-dev, libmygui-dev
     ]
@@ -49,10 +52,10 @@ matrix:
   include:
     - os: linux
       env:
-        ANALYZE="scan-build-3.6 --use-cc clang-3.6 --use-c++ clang++-3.6 "
+        ANALYZE="scan-build-5.0 --use-cc clang-5.0 --use-c++ clang++-5.0 "
       compiler: clang
   allow_failures:
-    - env: ANALYZE="scan-build-3.6 --use-cc clang-3.6 --use-c++ clang++-3.6 "
+    - env: ANALYZE="scan-build-5.0 --use-cc clang-5.0 --use-c++ clang++-5.0 "
 
 before_install: ./CI/before_install.${TRAVIS_OS_NAME}.sh
 before_script: ./CI/before_script.${TRAVIS_OS_NAME}.sh
